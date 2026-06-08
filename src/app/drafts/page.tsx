@@ -90,7 +90,7 @@ export default function DraftsInbox() {
                     <span className="material-symbols-outlined">delete</span>
                     Delete
                   </button>
-                  <Link href={`/review?jobIds=${draft.jobId}&draftId=${draft.id}`}>
+                  <Link href={`/review?jobId=${draft.jobId}&draftId=${draft.id}`}>
                     <button className="px-6 py-2 bg-primary text-on-primary rounded-lg font-bold transition-all hover:bg-primary/90 flex items-center gap-2 shadow-lg shadow-primary/20">
                       <span className="material-symbols-outlined">edit</span>
                       Edit & Send

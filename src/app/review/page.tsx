@@ -20,6 +20,25 @@ function ReviewPageContent() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // 1. If loading an existing draft, prioritize that (no session data needed)
+    const draftId = searchParams.get("draftId");
+    if (draftId) {
+      const draftsStr = localStorage.getItem("savedDrafts");
+      if (draftsStr) {
+        const drafts = JSON.parse(draftsStr);
+        const existingDraft = drafts.find((d: any) => d.id === draftId);
+        if (existingDraft) {
+          setJob({ company: existingDraft.company, title: existingDraft.jobTitle });
+          setRecruiterEmail(existingDraft.recruiterEmail);
+          setEmailSubject(existingDraft.subject);
+          setEmailDraft(existingDraft.body);
+          setIsDrafting(false);
+          return; // Successfully loaded draft, skip new LLM generation entirely
+        }
+      }
+    }
+
+    // 2. Otherwise, we are generating a fresh draft, which requires session data
     const savedJobs = sessionStorage.getItem("fetchedJobs");
     const savedResumes = sessionStorage.getItem("tailoredResumes");
     
@@ -33,25 +52,6 @@ function ReviewPageContent() {
       if (foundJob && foundResume) {
         setJob(foundJob);
         setTailoredResume(foundResume);
-
-        // Check if we are loading an existing draft
-        const draftId = searchParams.get("draftId");
-        if (draftId) {
-          const draftsStr = localStorage.getItem("savedDrafts");
-          if (draftsStr) {
-            const drafts = JSON.parse(draftsStr);
-            const existingDraft = drafts.find((d: any) => d.id === draftId);
-            if (existingDraft) {
-              setRecruiterEmail(existingDraft.recruiterEmail);
-              setEmailSubject(existingDraft.subject);
-              setEmailDraft(existingDraft.body);
-              setIsDrafting(false);
-              return; // Skip new LLM generation
-            }
-          }
-        }
-
-        // Otherwise generate a fresh draft
         generateDraft(foundJob, foundResume.tailoredRun);
       } else {
         setError("Job or Tailored Resume data not found.");
