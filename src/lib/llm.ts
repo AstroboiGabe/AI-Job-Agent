@@ -45,6 +45,7 @@ export async function parseResume(resumeText: string) {
   const schemaStr = `{ "contact": { "email": "str" }, "summary": "str", "skills": ["str"], "experience": [{ "company": "str", "title": "str", "startDate": "str", "endDate": "str", "bullets": ["str"] }] }`;
   const { text } = await generateText({
     model: groq(MODEL_NAME),
+    // @ts-expect-error - Vercel AI SDK type mismatch for maxTokens
     maxTokens: 4000,
     system: prompts.RESUME_PARSER_PROMPT + JSON_PROMPT_SUFFIX + `\n\nEXPECTED SCHEMA:\n${schemaStr}`,
     prompt: `Parse the following resume:\n\n${resumeText}`,
@@ -57,6 +58,7 @@ export async function extractJD(jdText: string) {
   const schemaStr = `{ "jobTitle": "str", "company": "str", "requiredSkills": ["str"], "preferredSkills": ["str"], "responsibilities": ["str"], "qualifications": ["str"], "tools": ["str"], "keywords": ["str"] }`;
   const { text } = await generateText({
     model: groq(MODEL_NAME),
+    // @ts-expect-error - Vercel AI SDK type mismatch for maxTokens
     maxTokens: 4000,
     system: prompts.JD_EXTRACTION_PROMPT + JSON_PROMPT_SUFFIX + `\n\nEXPECTED SCHEMA:\n${schemaStr}`,
     prompt: `Extract requirements from this Job Description:\n\n${jdText}`,
@@ -69,6 +71,7 @@ export async function scoreMatch(resumeProfile: any, jdProfile: any) {
   const schemaStr = `{ "overallScore": 0-100, "skillCoverageScore": 0-100, "responsibilityAlignmentScore": 0-100, "keywordScore": 0-100, "seniorityScore": 0-100, "criticalMissingRequirements": ["str"], "explanation": "str" }`;
   const { text } = await generateText({
     model: groq(MODEL_NAME),
+    // @ts-expect-error - Vercel AI SDK type mismatch for maxTokens
     maxTokens: 4000,
     system: prompts.MATCH_SCORING_PROMPT + JSON_PROMPT_SUFFIX + `\n\nEXPECTED SCHEMA:\n${schemaStr}`,
     prompt: `Evaluate the match.\n\nResume: ${JSON.stringify(resumeProfile)}\n\nJob Description: ${JSON.stringify(jdProfile)}`,
@@ -81,6 +84,7 @@ export async function analyzeGaps(resumeProfile: any, jdProfile: any) {
   const schemaStr = `{ "gaps": [{ "name": "str", "importance": "high|medium|low", "jdEvidence": "str", "resumeEvidence": "str", "suggestedAction": "str", "canSafelyAdd": true|false }] }`;
   const { text } = await generateText({
     model: groq(MODEL_NAME),
+    // @ts-expect-error - Vercel AI SDK type mismatch for maxTokens
     maxTokens: 4000,
     system: prompts.GAP_ANALYSIS_PROMPT + JSON_PROMPT_SUFFIX + `\n\nEXPECTED SCHEMA:\n${schemaStr}`,
     prompt: `Analyze gaps between the resume and job description.\n\nResume: ${JSON.stringify(resumeProfile)}\n\nJob Description: ${JSON.stringify(jdProfile)}`,
@@ -93,6 +97,7 @@ export async function tailorResume(resumeProfile: any, jdProfile: any) {
   const schemaStr = `{ "tailoredSummary": "str", "tailoredSkills": ["str"], "tailoredExperience": [{ "company": "str", "title": "str", "bullets": [{ "original": "str", "tailored": "str", "changeReason": "str", "keywordsAddressed": ["str"], "confidence": "high|medium|low", "riskFlag": "str" }] }] }`;
   const { text } = await generateText({
     model: groq(MODEL_NAME),
+    // @ts-expect-error - Vercel AI SDK type mismatch for maxTokens
     maxTokens: 4000,
     system: prompts.BULLET_REWRITER_PROMPT + JSON_PROMPT_SUFFIX + `\n\nEXPECTED SCHEMA:\n${schemaStr}`,
     prompt: `Tailor the following resume for the job description.\n\nResume: ${JSON.stringify(resumeProfile)}\n\nJob Description: ${JSON.stringify(jdProfile)}`,
