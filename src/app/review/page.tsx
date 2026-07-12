@@ -159,6 +159,7 @@ function ReviewPageContent() {
   };
 
   if (sendSuccess) {
+    const returnJobIds = searchParams.get("allJobIds") || jobId || "";
     return (
       <div className="min-h-screen bg-surface flex flex-col items-center justify-center p-8 text-center">
         <div className="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center mb-6">
@@ -168,23 +169,25 @@ function ReviewPageContent() {
         <p className="text-on-surface-variant w-full max-w-3xl mb-8 text-lg">
           Your tailored resume and personalized cold email have been successfully dispatched to {recruiterEmail}.
         </p>
-        <Link href={searchParams.get("allJobIds") ? `/resume?jobIds=${searchParams.get("allJobIds")}` : "/"}>
+        <Link href={`/resume?jobIds=${returnJobIds}`}>
           <button className="px-8 py-3 bg-primary text-on-primary rounded-xl font-bold hover:brightness-110 transition-all">
-            {searchParams.get("allJobIds") ? "Continue Sending Emails" : "Return to Dashboard"}
+            Back to Resume Building
           </button>
         </Link>
       </div>
     );
   }
 
+  const returnJobIds = searchParams.get("allJobIds") || jobId || "";
+
   return (
     <>
       <header className="flex justify-between items-center w-full px-container-margin h-16 bg-surface border-b border-outline-variant sticky top-0 z-40">
         <div className="flex items-center gap-xl">
-          <Link href="/">
+          <Link href={`/resume?jobIds=${returnJobIds}`}>
             <button className="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2 font-bold">
               <span className="material-symbols-outlined">arrow_back</span>
-              Back to Dashboard
+              Back to Resume Building
             </button>
           </Link>
         </div>
@@ -283,7 +286,7 @@ function ReviewPageContent() {
                       Save to Drafts
                     </button>
                   </div>
-                  <Link href={`/resume?jobIds=${jobId}`}>
+                  <Link href={`/resume?jobIds=${returnJobIds}`}>
                     <button className="px-xl py-md text-on-surface-variant hover:text-error font-bold flex items-center gap-sm transition-colors group">
                       <span className="material-symbols-outlined group-hover:animate-pulse">delete</span>
                       Cancel
