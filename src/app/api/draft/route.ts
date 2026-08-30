@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createGroq } from '@ai-sdk/groq';
 import { generateText } from 'ai';
+import { MODEL_NAME } from '@/lib/llm';
 
 export const maxDuration = 60;
 
@@ -17,7 +18,6 @@ export async function POST(req: Request) {
     }
 
     const groq = createGroq();
-    const MODEL_NAME = 'llama-3.3-70b-versatile';
 
     const prompt = `
 You are an expert technical recruiter and sales closer.
