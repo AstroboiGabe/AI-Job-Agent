@@ -11,7 +11,7 @@ import * as prompts from './prompts';
 
 // Initialize Groq provider. It automatically uses process.env.GROQ_API_KEY
 const groq = createGroq();
-const MODEL_NAME = 'meta-llama/llama-prompt-guard-2-22m'; // Latest supported model
+const MODEL_NAME = 'mixtral-8x7b-32768'; // Latest supported model
 
 // Utility to parse text and extract JSON (removes markdown backticks if present)
 function extractAndParseJSON(text: string) {
